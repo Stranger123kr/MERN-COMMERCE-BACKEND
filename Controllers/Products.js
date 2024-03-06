@@ -1,12 +1,12 @@
-const Products = require("../Model/Products");
+const Product = require("../Model/Products");
 
 // ================================================
 
-exports.createProducts = async (req, res) => {
+exports.createProduct = async (req, res) => {
+  const product = new Product(req.body);
   try {
-    const product = new Products(req.body);
-    await product.save();
-    res.status(201).json(product);
+    const res = await product.save();
+    res.status(201).json(res);
   } catch (error) {
     res.status(400).json(error);
   }
@@ -14,12 +14,12 @@ exports.createProducts = async (req, res) => {
 
 // ================================================
 
-exports.fetchAllProducts = async (req, res) => {
+exports.fetchAllProduct = async (req, res) => {
   // TODO : we have to try with multiple category and brands after changes in frontend
 
   const { search, category, brand, _sort, _order, _page, _limit } = req.query;
 
-  let query = Products.find({});
+  let query = Product.find({});
 
   // searching functionality
 
@@ -55,8 +55,8 @@ exports.fetchAllProducts = async (req, res) => {
     query = query.sort({ [_sort]: _order });
   }
 
-  // this is use for calculate all products
-  const totalDocs = await Products.countDocuments(query);
+  // this is use for calculate all Product
+  const totalDocs = await Product.countDocuments(query);
 
   // pagination functionality
 
@@ -79,11 +79,11 @@ exports.fetchAllProducts = async (req, res) => {
 
 // ================================================
 
-exports.fetchProductsById = async (req, res) => {
+exports.fetchProductById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const response = await Products.findById(id);
+    const response = await Product.findById(id);
     res.status(200).json(response);
   } catch (error) {
     res.status(400).json(error);
@@ -92,10 +92,10 @@ exports.fetchProductsById = async (req, res) => {
 
 // ================================================
 
-exports.updateProducts = async (req, res) => {
+exports.updateProduct = async (req, res) => {
   const { id } = req.params;
   try {
-    const response = await Products.findByIdAndUpdate(id, req.body, {
+    const response = await Product.findByIdAndUpdate(id, req.body, {
       new: true,
     });
     res.status(200).json(response);
@@ -106,10 +106,10 @@ exports.updateProducts = async (req, res) => {
 
 // ================================================
 
-exports.deleteProducts = async (req, res) => {
+exports.deleteProduct = async (req, res) => {
   const { id } = req.params;
   try {
-    const response = await Products.findByIdAndDelete(id);
+    const response = await Product.findByIdAndDelete(id);
     res.status(200).json("Product Deleted");
   } catch (error) {
     res.status(400).json(error);

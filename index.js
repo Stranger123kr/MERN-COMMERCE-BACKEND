@@ -6,6 +6,9 @@ const server = express();
 const ProductsRouter = require("./Routes/Products");
 const CategoryRouter = require("./Routes/Category");
 const BrandsRouter = require("./Routes/Brands");
+const UserRouter = require("./Routes/User");
+const AuthRouter = require("./Routes/Auth");
+const CartRouter = require("./Routes/Cart");
 
 //  =================================
 
@@ -20,6 +23,9 @@ server.use(express.json()); // to parse req.body
 server.use("/products", ProductsRouter); // it gives a full control on routes
 server.use("/categories", CategoryRouter);
 server.use("/brands", BrandsRouter);
+server.use("/auth", AuthRouter);
+server.use("/users", UserRouter);
+server.use("/carts", CartRouter);
 
 // ====================================
 

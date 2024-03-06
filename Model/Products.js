@@ -80,4 +80,4 @@ ProductsSchema.set("toJSON", {
 
 // ===================================================
 
-module.exports = mongoose.model("Products", ProductsSchema);
+module.exports = mongoose.model("Product", ProductsSchema);

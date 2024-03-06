@@ -1,19 +1,19 @@
 const router = require("express").Router();
 const {
-  createProducts,
-  fetchAllProducts,
-  fetchProductsById,
-  updateProducts,
-  deleteProducts,
+  createProduct,
+  fetchAllProduct,
+  fetchProductById,
+  updateProduct,
+  deleteProduct,
 } = require("../Controllers/Products");
 
 // =========================================================
 
 router
-  .get("/", fetchAllProducts)
-  .get("/:id", fetchProductsById)
-  .post("/", createProducts)
-  .patch("/:id", updateProducts)
-  .delete("/:id", deleteProducts);
+  .get("/", fetchAllProduct)
+  .get("/:id", fetchProductById)
+  .post("/", createProduct)
+  .patch("/:id", updateProduct)
+  .delete("/:id", deleteProduct);
 
 module.exports = router;
