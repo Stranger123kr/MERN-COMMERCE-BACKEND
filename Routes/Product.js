@@ -5,7 +5,7 @@ const {
   fetchProductById,
   updateProduct,
   deleteProduct,
-} = require("../Controllers/Products");
+} = require("../Controllers/Product");
 
 // =========================================================
 

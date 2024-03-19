@@ -1,14 +1,40 @@
-const Product = require("../Model/Products");
+const Product = require("../Model/Product");
 
 // ================================================
 
 exports.createProduct = async (req, res) => {
-  const product = new Product(req.body);
+  const {
+    title,
+    description,
+    price,
+    discountPercentage,
+    rating,
+    stock,
+    brand,
+    category,
+    thumbnail,
+    images,
+  } = req.body;
+
+  const product = new Product({
+    title,
+    description,
+    price,
+    discountPercentage,
+    rating,
+    stock,
+    brand,
+    category,
+    thumbnail,
+    images,
+  });
   try {
-    const res = await product.save();
-    res.status(201).json(res);
+    const productSave = await product.save();
+    res.status(201).json(productSave);
   } catch (error) {
-    res.status(400).json(error);
+    res
+      .status(400)
+      .json({ error: "Failed to create product", details: error.message });
   }
 };
 
@@ -17,15 +43,15 @@ exports.createProduct = async (req, res) => {
 exports.fetchAllProduct = async (req, res) => {
   // TODO : we have to try with multiple category and brands after changes in frontend
 
-  const { search, category, brand, _sort, _order, _page, _limit } = req.query;
+  const { _search, category, brand, _sort, _order, _page, _limit } = req.query;
 
   let query = Product.find({});
 
   // searching functionality
 
-  if (search) {
-    const searchValues = search
-      .split(",")
+  if (_search) {
+    const searchValues = _search
+      .split(" ")
       .map((value) => value.trim().toLowerCase());
     const searchFilters = searchValues.map((value) => ({
       $or: [
@@ -55,7 +81,7 @@ exports.fetchAllProduct = async (req, res) => {
     query = query.sort({ [_sort]: _order });
   }
 
-  // this is use for calculate all Product
+  // this is use for calculate all Product in database
   const totalDocs = await Product.countDocuments(query);
 
   // pagination functionality
@@ -70,8 +96,8 @@ exports.fetchAllProduct = async (req, res) => {
   // ==========================================
 
   try {
-    const response = await query;
-    res.set("X-Total-Count", totalDocs), res.status(200).json(response);
+    const allProduct = await query;
+    res.set("X-Total-Count", totalDocs), res.status(200).json(allProduct);
   } catch (error) {
     res.status(400).json(error);
   }
@@ -83,8 +109,8 @@ exports.fetchProductById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const response = await Product.findById(id);
-    res.status(200).json(response);
+    const productById = await Product.findById(id);
+    res.status(200).json(productById);
   } catch (error) {
     res.status(400).json(error);
   }
@@ -95,10 +121,10 @@ exports.fetchProductById = async (req, res) => {
 exports.updateProduct = async (req, res) => {
   const { id } = req.params;
   try {
-    const response = await Product.findByIdAndUpdate(id, req.body, {
+    const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
       new: true,
     });
-    res.status(200).json(response);
+    res.status(200).json(updatedProduct);
   } catch (error) {
     res.status(400).json(error);
   }
@@ -109,8 +135,8 @@ exports.updateProduct = async (req, res) => {
 exports.deleteProduct = async (req, res) => {
   const { id } = req.params;
   try {
-    const response = await Product.findByIdAndDelete(id);
-    res.status(200).json("Product Deleted");
+    await Product.findByIdAndDelete(id);
+    res.status(200).json("Product Deleted Successfully");
   } catch (error) {
     res.status(400).json(error);
   }

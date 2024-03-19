@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const ProductsSchema = new Schema({
+const ProductSchema = new Schema({
   title: {
     type: String,
     required: true,
@@ -65,12 +65,12 @@ const ProductsSchema = new Schema({
 
 // ===================================================
 
-const virtualId = ProductsSchema.virtual("id");
+const virtualId = ProductSchema.virtual("id");
 virtualId.get(function () {
   return this._id;
 });
 
-ProductsSchema.set("toJSON", {
+ProductSchema.set("toJSON", {
   virtuals: true,
   versionKey: false,
   transform: function (doc, ret) {
@@ -80,4 +80,4 @@ ProductsSchema.set("toJSON", {
 
 // ===================================================
 
-module.exports = mongoose.model("Product", ProductsSchema);
+module.exports = mongoose.model("Product", ProductSchema);

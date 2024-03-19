@@ -3,7 +3,7 @@ const { fetchUserById, updateUser } = require("../Controllers/User");
 
 // =========================================================
 
-router.get("/:id", fetchUserById);
+router.get("/own", fetchUserById);
 router.patch("/:id", updateUser);
 
 module.exports = router;
