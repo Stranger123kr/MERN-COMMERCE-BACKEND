@@ -1,41 +1,49 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const UserSchema = new Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
+const UserSchema = new Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
 
-  password: {
-    type: Buffer,
-    required: true,
-  },
+    password: {
+      type: Buffer,
+      required: true,
+    },
 
-  role: {
-    type: String,
-    required: true,
-    default: "user",
-  },
+    role: {
+      type: String,
+      required: true,
+      default: "user",
+    },
 
-  addresses: {
-    type: [Schema.Types.Mixed],
-  },
+    addresses: {
+      type: [Schema.Types.Mixed],
+    },
 
-  name: {
-    type: String,
-  },
+    name: {
+      type: String,
+    },
 
-  orders: {
-    type: [Schema.Types.Mixed],
-  },
+    orders: {
+      type: [Schema.Types.Mixed],
+    },
 
-  salt: {
-    type: Buffer,
-    required: true,
+    salt: {
+      type: Buffer,
+      required: true,
+    },
+
+    resetPasswordToken: {
+      type: String,
+      default: "",
+    },
   },
-});
+  { timestamps: true }
+);
 
 // ===================================================
 

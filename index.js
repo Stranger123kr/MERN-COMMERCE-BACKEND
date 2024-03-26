@@ -10,6 +10,7 @@ const { PassportAuthentication } = require("./Middleware/PassportAuth");
 const { Auth } = require("./Middleware/Services");
 const { Passport_jwtAuthentication } = require("./Middleware/passport_jwt");
 const Razorpay = require("razorpay");
+const crypto = require("crypto");
 //  =================================
 
 const ProductRouter = require("./Routes/Product");
@@ -47,11 +48,12 @@ server.use(
 );
 
 server.use(express.json());
-// server.use(express.urlencoded({ extended: true }));
+server.use(express.urlencoded({ extended: true }));
 
 // ==============================================
 PassportAuthentication(passport); // user authentication function call
 Passport_jwtAuthentication(passport); // jwt authentication function call
+
 // these are routes
 server.use("/products", Auth(), ProductRouter); // we can also use Jwt Token for client-only auth
 server.use("/categories", Auth(), CategoryRouter);
@@ -64,25 +66,65 @@ server.use("/orders", Auth(), OrderRouter);
 // ====================================
 
 const instance = new Razorpay({
-  key_id: "rzp_test_BqpAdjmem7uL88",
-  key_secret: "dg06IwTgpUjS5HkMQzZMEJKs",
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_SECRET,
 });
 
-server.post("/create/orderId", (req, res) => {
-  console.log(req.body);
+server.post("/create/payment", async (req, res) => {
+  try {
+    const options = {
+      amount: req.body.amount * 100, // Amount should be in paise
+      currency: "INR",
+      receipt: "order_rcptid_11",
+    };
 
-  const options = {
-    amount: Number(req.body.amount * 100), // amount in the smallest currency unit
-    currency: "INR",
-    // receipt: "order_rcptid_11",
-  };
-  instance.orders.create(options, (err, order) => {
-    console.log(order);
-    res.status(200).json(order);
-  });
+    const response = await instance.orders.create(options);
+    console.log("Response", response);
+    res.status(200).json(response);
+  } catch (error) {
+    console.log("Error", error);
+    res.status(500).json(error);
+  }
 });
 
-// ====================================
+// ======================================
+
+server.post("/payment/success", async (req, res) => {
+  try {
+    // Getting the details back from our front-end
+    const {
+      orderCreationId,
+      razorpay_payment_id,
+      razorpay_order_id,
+      razorpay_signature,
+    } = req.body;
+
+    console.log(req.body);
+
+    // Creating the expected signature
+    const generated_signature = razorpay_order_id + "|" + razorpay_payment_id;
+
+    // Checking if the generated signature matches the received signature
+
+    const expectedSignature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_SECRET)
+      .update(generated_signature.toString())
+      .digest("hex");
+
+    // Comparing the expected signature with the received signature
+    if (expectedSignature === razorpay_signature) {
+      console.log("Transaction done");
+      res.redirect(`http://localhost:3000/order_success/${razorpay_order_id}`);
+    } else {
+      res.status(400).json({ msg: "Transaction not legit!" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+});
+
+// ===================================================================
 
 const port = process.env.PORT || 8080;
 
