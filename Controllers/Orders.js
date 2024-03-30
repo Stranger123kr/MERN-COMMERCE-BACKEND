@@ -1,15 +1,43 @@
+const { InvoiceTemplate, SendMail } = require("../Middleware/Services");
 const Orders = require("../Model/Orders");
-
+const User = require("../Model/User");
+const Product = require("../Model/Product");
 // ================================================
 
 exports.addToOrder = async (req, res) => {
   try {
     const { id } = req.user;
     const order = new Orders({ ...req.body, user: id });
+
+    // stock manipulation before save the order
+
+    order.GetAddToCart.forEach(async (item) => {
+      const id = item.product.id;
+      const ProductFind = await Product.findById(id);
+      ProductFind.stock -= item.quantity;
+      await ProductFind.save();
+    });
+
+    // =========================================
+
     const doc = await order.save();
     const response = await doc.populate("user");
+
+    // ========================================
+
+    const user = await User.findById(order.user);
+
+    // this is method to send invoice to user for their order
+
+    await SendMail({
+      to: user.email,
+      subject: "This is Invoice Email of Your Order",
+      html: InvoiceTemplate(order),
+    });
+
     res.status(201).json(response);
   } catch (error) {
+    console.log(error);
     res.status(400).json(error);
   }
 };
@@ -30,13 +58,9 @@ exports.fetchOderByUser = async (req, res) => {
 // ================================================
 
 exports.fetchAllOder = async (req, res) => {
-  const { _sort, _order, _page, _limit } = req.query;
+  const { _page, _limit } = req.query;
 
   let OrderQuery = Orders.find({});
-
-  if (_sort && _order) {
-    OrderQuery = OrderQuery.sort({ [_sort]: _order });
-  }
 
   // this is use for calculate all Product
   const totalDocs = await Orders.countDocuments(OrderQuery);
@@ -51,6 +75,19 @@ exports.fetchAllOder = async (req, res) => {
   try {
     const response = await OrderQuery;
     res.set("X-Total-Count", totalDocs), res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
+
+// ================================================
+
+exports.fetchOderById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const response = await Orders.findById(id);
+    res.status(200).json(response);
   } catch (error) {
     res.status(400).json(error);
   }

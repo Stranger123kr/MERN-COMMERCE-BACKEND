@@ -29,16 +29,16 @@ const OrdersSchema = new Schema(
       required: true,
     },
 
-    // ToDo i will add enum in payment and status and user role for admin
-
     paymentMethod: {
       type: String,
       required: true,
+      enum: ["card", "cash"],
     },
 
     status: {
       type: String,
       required: true,
+      enum: ["pending", "dispatched", "delivered", "canceled"],
       default: "pending",
     },
   },

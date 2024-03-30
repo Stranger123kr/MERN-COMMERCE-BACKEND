@@ -23,15 +23,17 @@ const ProductSchema = new Schema(
     discountPercentage: {
       type: Number,
       required: true,
-      min: [1, "minimum 1 % at least"],
       mix: [99, "maximum 99% discount allowed"],
       default: 0,
+    },
+
+    discountPrice: {
+      type: Number,
     },
 
     rating: {
       type: Number,
       required: true,
-      min: [1, "minimum 1 rating at least"],
       mix: [5, "maximum 5 rating allowed"],
       default: 0,
     },

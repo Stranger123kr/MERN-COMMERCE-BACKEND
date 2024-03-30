@@ -3,6 +3,7 @@ const {
   addToOrder,
   fetchOderByUser,
   fetchAllOder,
+  fetchOderById,
   updateOrder,
 } = require("../Controllers/Orders");
 
@@ -10,6 +11,7 @@ const {
 
 router
   .get("/", fetchOderByUser)
+  .get("/admin/:id", fetchOderById)
   .get("/admin", fetchAllOder)
   .post("/", addToOrder)
   .patch("/:id", updateOrder);
