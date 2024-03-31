@@ -30,10 +30,6 @@ server.use(
     secret: process.env.SESSION_SECRET_KEY,
     resave: false, // don't save session if unmodified
     saveUninitialized: false, // don't create session until something stored
-    cookie: {
-      secure: true, // Set to true if using HTTPS
-      sameSite: true, // Set to true if using the "Lax" SameSite attribute
-    },
   })
 );
 
@@ -41,8 +37,6 @@ server.use(passport.authenticate("session"));
 server.use(
   // allow to communicate with different origin domains
   cors({
-    origin: "https://mern-commerce-frontend-pink.vercel.app",
-    credentials: true,
     exposedHeaders: ["X-Total-Count"],
   })
 );
