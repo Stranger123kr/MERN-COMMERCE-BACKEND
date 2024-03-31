@@ -41,7 +41,7 @@ server.use(passport.authenticate("session"));
 server.use(
   // allow to communicate with different origin domains
   cors({
-    // origin: "http://localhost:3000",
+    origin: "http://localhost:3000",
     // credentials: true,
     exposedHeaders: ["X-Total-Count"],
   })
