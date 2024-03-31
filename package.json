@@ -4,8 +4,7 @@
   "description": "This is full Functional E-commerce App",
   "main": "index.js",
   "scripts": {
-    "start": "index.js",
-    "npm": "index.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
