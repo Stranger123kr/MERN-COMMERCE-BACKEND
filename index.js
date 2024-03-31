@@ -41,7 +41,7 @@ server.use(passport.authenticate("session"));
 server.use(
   // allow to communicate with different origin domains
   cors({
-    origin: "https://mern-commerce-frontend-pink.vercel.app/",
+    origin: "https://mern-commerce-frontend-pink.vercel.app",
     credentials: true,
     exposedHeaders: ["X-Total-Count"],
   })
