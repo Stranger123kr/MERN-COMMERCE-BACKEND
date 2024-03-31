@@ -29,7 +29,7 @@ exports.createUser = async (req, res) => {
               sanitizeUser(req.user),
               process.env.JWT_SECRET_KEY
             );
-            res.cookie("Jwt_token", token);
+            res.cookie("Jwt_token", token, "Path=/; SameSite=None; Secure");
             res.status(200).json(req.user);
           }
         });
@@ -44,7 +44,7 @@ exports.createUser = async (req, res) => {
 
 exports.loginUser = async (req, res) => {
   const token = jwt.sign(sanitizeUser(req.user), process.env.JWT_SECRET_KEY);
-  res.cookie("Jwt_token", token);
+  res.cookie("Jwt_token", token, "Path=/; SameSite=None; Secure");
   res.status(200).json(req.user);
 };
 
@@ -642,6 +642,6 @@ exports.ResetPassword = async (req, res) => {
 // ================================================
 
 exports.signOutUser = async (req, res) => {
-  res.cookie("Jwt_token", null);
+  res.cookie("Jwt_token", null, "Path=/; SameSite=None; Secure");
   res.status(200).json("User SignOut");
 };
