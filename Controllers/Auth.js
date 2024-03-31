@@ -44,8 +44,7 @@ exports.createUser = async (req, res) => {
 
 exports.loginUser = async (req, res) => {
   const token = jwt.sign(sanitizeUser(req.user), process.env.JWT_SECRET_KEY);
-  res.cookie("Jwt_token", token, "SameSite=None; Secure");
-  res.setHeader(`Set-Cookie", Jwt_token=${token}; SameSite=None; Secure`);
+  res.cookie("Jwt_token", token);
   res.status(200).json(req.user);
 };
 

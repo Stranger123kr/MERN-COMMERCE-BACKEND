@@ -24,7 +24,7 @@ const OrderRouter = require("./Routes/Orders");
 // =================================
 
 // middlewares
-server.use(cookieParser());
+
 server.use(
   session({
     secret: process.env.SESSION_SECRET_KEY,
@@ -32,7 +32,7 @@ server.use(
     saveUninitialized: false, // don't create session until something stored
     cookie: {
       secure: true, // Set to true if using HTTPS
-      sameSite: false, // Set to true if using the "Lax" SameSite attribute
+      sameSite: true, // Set to true if using the "Lax" SameSite attribute
     },
   })
 );
@@ -46,9 +46,9 @@ server.use(
     exposedHeaders: ["X-Total-Count"],
   })
 );
-
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
+server.use(cookieParser());
 
 // ==============================================
 PassportAuthentication(passport); // user authentication function call
