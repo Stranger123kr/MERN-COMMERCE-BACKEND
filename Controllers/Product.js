@@ -35,7 +35,6 @@ exports.createProduct = async (req, res) => {
     const productSave = await product.save();
     res.status(201).json(productSave);
   } catch (error) {
-    console.log(error);
     res
       .status(400)
       .json({ error: "Failed to create product", details: error.message });
@@ -134,7 +133,6 @@ exports.updateProduct = async (req, res) => {
     const updatedProduct = await product.save();
     res.status(200).json(updatedProduct);
   } catch (error) {
-    console.log(error);
     res.status(400).json(error);
   }
 };

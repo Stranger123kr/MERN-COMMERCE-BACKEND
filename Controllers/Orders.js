@@ -9,12 +9,20 @@ exports.addToOrder = async (req, res) => {
     const { id } = req.user;
     const order = new Orders({ ...req.body, user: id });
 
-    // stock manipulation before save the order
+    // stock manipulation before save the order 1 Method
+
+    // order.GetAddToCart.forEach(async (item) => {
+    //   const id = item.product.id;
+    //   const ProductFind = await Product.findById(id);
+    //   ProductFind.stock -= item.quantity;
+    //   await ProductFind.save();
+    // });
+
+    // stock manipulation before save the order 2 Method
 
     order.GetAddToCart.forEach(async (item) => {
-      const id = item.product.id;
-      const ProductFind = await Product.findById(id);
-      ProductFind.stock -= item.quantity;
+      const ProductFind = await Product.findById(item.product.id);
+      ProductFind.$inc("stock", -1 * item.quantity);
       await ProductFind.save();
     });
 
@@ -37,7 +45,6 @@ exports.addToOrder = async (req, res) => {
 
     res.status(201).json(response);
   } catch (error) {
-    console.log(error);
     res.status(400).json(error);
   }
 };

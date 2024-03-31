@@ -45,7 +45,6 @@ exports.cookieExtractor = (req) => {
 // this is nodemailer for sending email to user fro reset password
 
 exports.SendMail = async ({ to, subject, text, html }) => {
-  console.log("Email");
   try {
     const info = await transporter.sendMail({
       from: '"Apanee Dukaan", <ApaneeDukaan@gmail.com>', // list of receivers
@@ -66,7 +65,6 @@ exports.SendMail = async ({ to, subject, text, html }) => {
 // this is nodemailer for sending email to user fro Invoice
 
 exports.InvoiceTemplate = (order) => {
-  console.log("InvoiceTemplate");
   return `<!DOCTYPE html>
 <html>
 <head>

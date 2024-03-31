@@ -79,10 +79,9 @@ server.post("/create/payment", async (req, res) => {
     };
 
     const response = await instance.orders.create(options);
-    console.log("Response", response);
+
     res.status(200).json(response);
   } catch (error) {
-    console.log("Error", error);
     res.status(500).json(error);
   }
 });
@@ -99,8 +98,6 @@ server.post("/payment/success", async (req, res) => {
       razorpay_signature,
     } = req.body;
 
-    console.log(req.body);
-
     // Creating the expected signature
     const generated_signature = razorpay_order_id + "|" + razorpay_payment_id;
 
@@ -113,13 +110,11 @@ server.post("/payment/success", async (req, res) => {
 
     // Comparing the expected signature with the received signature
     if (expectedSignature === razorpay_signature) {
-      console.log("Transaction done");
       res.redirect(`http://localhost:3000/order_success/${razorpay_order_id}`);
     } else {
       res.status(400).json({ msg: "Transaction not legit!" });
     }
   } catch (error) {
-    console.log(error);
     res.status(500).json(error);
   }
 });
