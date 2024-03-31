@@ -42,7 +42,7 @@ server.use(
   // allow to communicate with different origin domains
   cors({
     // origin: "http://localhost:3000",
-    // credentials: true,
+    credentials: true,
     exposedHeaders: ["X-Total-Count"],
   })
 );
