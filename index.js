@@ -110,7 +110,9 @@ server.post("/payment/success", async (req, res) => {
 
     // Comparing the expected signature with the received signature
     if (expectedSignature === razorpay_signature) {
-      res.redirect(`http://localhost:3000/order_success/${razorpay_order_id}`);
+      res.redirect(
+        `https://mern-commerce-frontend-pink.vercel.app/order_success/${razorpay_order_id}`
+      );
     } else {
       res.status(400).json({ msg: "Transaction not legit!" });
     }
