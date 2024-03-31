@@ -36,7 +36,7 @@ server.use(
     },
   })
 );
-server.use(cookieParser());
+
 server.use(passport.authenticate("session"));
 server.use(
   // allow to communicate with different origin domains
@@ -49,7 +49,7 @@ server.use(
 
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
-
+server.use(cookieParser());
 // ==============================================
 PassportAuthentication(passport); // user authentication function call
 Passport_jwtAuthentication(passport); // jwt authentication function call
