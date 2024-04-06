@@ -603,7 +603,6 @@ exports.ResetPasswordRequest = async (req, res) => {
       res.status(404).json("User Not Verify");
     }
   } catch (error) {
-    console.log(error);
     res.status(400).json(error);
   }
 };
