@@ -42,7 +42,7 @@ server.use(passport.authenticate("session"));
 server.use(
   // allow to communicate with different origin domains
   cors({
-    origin: "https://mern-commerce-frontend-pink.vercel.app",
+    origin: process.env.FRONTEND_URL,
     credentials: true,
     exposedHeaders: ["X-Total-Count"],
   })
@@ -111,7 +111,7 @@ server.post("/payment/success", async (req, res) => {
     // Comparing the expected signature with the received signature
     if (expectedSignature === razorpay_signature) {
       res.redirect(
-        `https://mern-commerce-frontend-pink.vercel.app/order_success/${razorpay_order_id}`
+        `${process.env.FRONTEND_URL}/order_success/${razorpay_order_id}`
       );
     } else {
       res.status(400).json({ msg: "Transaction not legit!" });

@@ -72,7 +72,7 @@ exports.ResetPasswordRequest = async (req, res) => {
 
       // send email and token in body so that we can verify the user  has click right link
 
-      const resetPage = `https://mern-commerce-frontend-pink.vercel.app/reset_Password?token=${Token}&email=${email}`;
+      const resetPage = `${process.env.FRONTEND_URL}/reset_Password?token=${Token}&email=${email}`;
 
       const subject = "Reset Your Password for you E-commerce App";
 
@@ -523,7 +523,7 @@ exports.ResetPasswordRequest = async (req, res) => {
           <table class="email-content" width="100%" cellpadding="0" cellspacing="0" role="presentation">
             <tr>
               <td class="email-masthead">
-                <a href="https://mern-commerce-frontend-pink.vercel.app" class="f-fallback email-masthead_name">
+                <a href={${process.env.FRONTEND_URL}} class="f-fallback email-masthead_name">
                 Apanee Dukaan
               </a>
               </td>
