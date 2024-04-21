@@ -642,6 +642,13 @@ exports.ResetPassword = async (req, res) => {
 // ================================================
 
 exports.signOutUser = async (req, res) => {
-  res.cookie(`Jwt_token="null"; Path=/; SameSite=None; Secure`);
-  res.status(200).json("User SignOut");
+  req.session.destroy(function (err) {
+    if (err) {
+      console.log(err);
+      res.status(500).json({ error: "Failed to destroy session" });
+    } else {
+      res.clearCookie("Jwt_token");
+      res.status(200).json("User SignOut");
+    }
+  });
 };

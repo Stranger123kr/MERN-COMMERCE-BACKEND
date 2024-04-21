@@ -28,6 +28,14 @@ const UserSchema = new Schema(
       type: String,
     },
 
+    googleId: {
+      type: String,
+    },
+
+    image: {
+      type: String,
+    },
+
     orders: {
       type: [Schema.Types.Mixed],
     },
