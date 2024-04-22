@@ -25,7 +25,8 @@ exports.PassportGoogleAuthentication = (passport) => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "/auth/google/callback",
+        callbackURL:
+          "https://mern-commerce-backend-64fw.onrender.com/auth/google/callback",
         scope: ["profile", "email"],
       },
 
