@@ -28,7 +28,7 @@ router
   .get(
     "/google/callback",
     passport.authenticate("google", {
-      failureRedirect: "http://localhost:3000/login",
+      failureRedirect: `${process.env.FRONTEND_URL}/login`,
     }),
     function (req, res) {
       const token = jwt.sign(
@@ -36,7 +36,7 @@ router
         process.env.JWT_SECRET_KEY
       );
       res.cookie(`Jwt_token=${token}; Path=/; SameSite=None; Secure`);
-      res.redirect("http://localhost:3000"); // Redirect here
+      res.redirect(process.env.FRONTEND_URL); // Redirect here
     }
   );
 
