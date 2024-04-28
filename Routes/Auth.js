@@ -24,10 +24,7 @@ router
 
   // github authentication routes
 
-  .get(
-    "/github",
-    passport.authenticate("github", { scope: ["profile", "email"] })
-  )
+  .get("/github", passport.authenticate("github", { scope: ["user:email"] }))
 
   .get(
     "/github/callback",
