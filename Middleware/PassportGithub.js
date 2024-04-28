@@ -27,7 +27,6 @@ exports.PassportGithubAuthentication = (passport) => {
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
         callbackURL:
           "https://mern-commerce-backend-64fw.onrender.com/auth/github/callback",
-        scope: ["profile", "email"],
       },
 
       async (accessToken, refreshToken, profile, done) => {
