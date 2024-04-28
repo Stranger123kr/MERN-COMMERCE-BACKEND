@@ -20,6 +20,34 @@ router
   .post("/reset_Password", ResetPassword)
   .post("/login", passport.authenticate("local"), loginUser)
 
+  // ====================================================
+
+  // github authentication routes
+
+  .get(
+    "/github",
+    passport.authenticate("github", { scope: ["profile", "email"] })
+  )
+
+  .get(
+    "/github/callback",
+    passport.authenticate("github", {
+      failureRedirect: `${process.env.FRONTEND_URL}/login`,
+    }),
+    function (req, res) {
+      const token = jwt.sign(
+        sanitizeUser(req.user),
+        process.env.JWT_SECRET_KEY
+      );
+      res.cookie(`Jwt_token=${token}; Path=/; SameSite=None; Secure`);
+      res.redirect(process.env.FRONTEND_URL); // Redirect here
+    }
+  )
+
+  // ====================================================
+
+  // google authentication routes
+
   .get(
     "/google",
     passport.authenticate("google", { scope: ["profile", "email"] })

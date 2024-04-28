@@ -1,5 +1,5 @@
 const User = require("../Model/User");
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const GitHubStrategy = require("passport-github2").Strategy;
 const { sanitizeUser } = require("./Services");
 // =======================================
 
@@ -17,16 +17,16 @@ const generatePassword = (length) => {
 
 // =======================================
 
-exports.PassportGoogleAuthentication = (passport) => {
+exports.PassportGithubAuthentication = (passport) => {
   // passport strategies
 
   passport.use(
-    new GoogleStrategy(
+    new GitHubStrategy(
       {
-        clientID: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        clientID: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
         callbackURL:
-          "https://mern-commerce-backend-64fw.onrender.com/auth/google/callback",
+          "https://mern-commerce-backend-64fw.onrender.com/auth/github/callback",
         scope: ["profile", "email"],
       },
 
@@ -37,9 +37,9 @@ exports.PassportGoogleAuthentication = (passport) => {
           if (!user) {
             user = new User({
               socialMediaId: profile.id,
-              name: profile.displayName,
-              image: profile.photos[0].value,
-              email: profile.emails[0].value,
+              name: profile.username,
+              image: profile._json.avatar_url,
+              email: profile._json.email || "Not Present",
               password: generatePassword(30),
               salt: generatePassword(30),
             });

@@ -7,6 +7,7 @@ const passport = require("passport");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const { PassportGoogleAuthentication } = require("./Middleware/PassportGoogle");
+const { PassportGithubAuthentication } = require("./Middleware/PassportGithub");
 const { PassportAuthentication } = require("./Middleware/PassportAuth");
 const { Passport_jwtAuthentication } = require("./Middleware/passport_jwt");
 const { Auth } = require("./Middleware/Services");
@@ -53,6 +54,7 @@ server.use(express.urlencoded({ extended: true }));
 
 // ==============================================
 PassportGoogleAuthentication(passport); // user authentication function call
+PassportGithubAuthentication(passport); // user authentication function call
 PassportAuthentication(passport); // user authentication function call
 Passport_jwtAuthentication(passport); // jwt authentication function call
 
